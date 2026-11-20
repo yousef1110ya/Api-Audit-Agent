@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pipeline/schemas/rating.schema.json",
+  "title": "Stage 2 — Test Security-Focus Rating",
+  "type": "object",
+  "required": ["overall", "gate_met", "modules"],
+  "additionalProperties": false,
+  "properties": {
+    "overall": { "type": "number", "minimum": 0, "maximum": 5, "description": "Mean of module scores on the 1-5 scale, with the high-severity cap applied per the rubric." },
+    "gate_met": { "type": "boolean", "description": "True iff overall >= 4.5 (the 90% gate)." },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module", "score", "categories_tested", "categories_missing", "gaps", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "module": { "type": "string" },
+          "score": { "type": "number", "minimum": 1, "maximum": 5 },
+          "categories_tested": { "type": "array", "items": { "type": "string" } },
+          "categories_missing": { "type": "array", "items": { "type": "string" } },
+          "categories_na": { "type": "array", "items": { "type": "string" }, "description": "Categories genuinely not applicable to this module (with reason implied)." },
+          "gaps": { "type": "array", "items": { "type": "string" }, "description": "Specific, actionable things to add/fix. Each should be closeable by the author." },
+          "evidence": { "type": "array", "items": { "type": "string" }, "description": "file:line citations inside inputs/ backing each judgement." }
+        }
+      }
+    },
+    "blocking_gaps": { "type": "array", "items": { "type": "string" }, "description": "The gaps that must be closed before the gate can be met." },
+    "notes": { "type": "string" }
+  }
+}

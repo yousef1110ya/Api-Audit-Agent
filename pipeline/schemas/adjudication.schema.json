@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pipeline/schemas/adjudication.schema.json",
+  "title": "Stage 6 — Finding Adjudication Verdicts",
+  "type": "object",
+  "required": ["verdicts", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "verdict", "faithful_citation", "reasoning"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "description": "Matches the Stage-5 candidate id." },
+          "category_confirmed": { "type": "string", "description": "The category the evidence actually proves (may differ from the claim)." },
+          "verdict": { "type": "string", "enum": ["CONFIRMED", "PLAUSIBLE", "REJECTED"] },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "n/a"] },
+          "faithful_citation": { "type": "boolean", "description": "Does the cited log step actually contain what the candidate claimed?" },
+          "reasoning": { "type": "string" },
+          "missing_to_confirm": { "type": ["string", "null"], "description": "Required for PLAUSIBLE: the exact missing proof-leg/step." },
+          "alternative_explanation_considered": { "type": ["string", "null"], "description": "Required for REJECTED: the benign/other cause that fits the evidence." }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["confirmed", "plausible", "rejected"],
+      "additionalProperties": false,
+      "properties": {
+        "confirmed": { "type": "integer", "minimum": 0 },
+        "plausible": { "type": "integer", "minimum": 0 },
+        "rejected": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

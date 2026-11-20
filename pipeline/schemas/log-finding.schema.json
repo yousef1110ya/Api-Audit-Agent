@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pipeline/schemas/log-finding.schema.json",
+  "title": "Stage 5 — Log Analysis Candidates",
+  "type": "object",
+  "required": ["candidates"],
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "category", "verdict", "evidence", "secure_expectation", "why"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "description": "Stable id, e.g. C1, C2." },
+          "title": { "type": "string" },
+          "category": { "type": "string", "enum": ["BOLA", "IDOR", "mass-assignment", "privilege-escalation", "injection", "SSRF", "business-logic", "auth-session", "LLM", "info-disclosure", "other"] },
+          "verdict": { "type": "string", "enum": ["yes", "no", "needs-more-data"] },
+          "severity_hint": { "type": "string", "enum": ["critical", "high", "medium", "low", "unknown"] },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["step", "shows"],
+              "additionalProperties": false,
+              "properties": {
+                "step": { "type": "integer", "description": "Step number present in inputs/ steps.jsonl." },
+                "shows": { "type": "string" },
+                "request": { "type": "string" },
+                "response_excerpt": { "type": "string" }
+              }
+            }
+          },
+          "secure_expectation": { "type": "string", "description": "What a secure server should have done." },
+          "why": { "type": "string", "description": "Why the logged bytes do (yes) or do not (no/needs-more-data) show a flaw." },
+          "missing_step": { "type": "string", "description": "For needs-more-data: the exact additional request that would settle it." }
+        }
+      }
+    },
+    "coverage_note": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

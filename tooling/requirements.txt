@@ -1,0 +1,20 @@
+# Pip-installable security tooling referenced by the skills.
+# The kit's OWN scripts (validate_findings.py, evidence_kit.py) need NOTHING here — they are pure
+# stdlib. This list enables the broader methodology. Installed into a local .venv by:
+#     python onboard.py install
+# Trim anything you don't need; Go-/system-based tools are listed in ONBOARDING.md (not here).
+
+# --- source-code auditing (skills/vulnerability-analysis, owasp-security) ---
+semgrep            # multi-language static analysis / taint queries
+bandit             # Python SAST
+pip-audit          # Python dependency / CVE audit
+
+# --- supply chain / IaC (skills/vulnerability-analysis, cloud-security) ---
+checkov            # IaC + config scanning (Terraform/CFN/K8s/Dockerfile)
+
+# --- cloud posture & attack (skills/cloud-security) ---
+scoutsuite         # multi-cloud security posture auditing
+awscli             # AWS CLI (identity enumeration, STS, IAM)
+
+# --- web / API (skills/web-pentest) ---
+# (sqlmap, ffuf, dalfox, nuclei, httpx, jwt_tool are Go/standalone — see ONBOARDING.md)
